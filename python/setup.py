@@ -48,7 +48,10 @@ def prune_cmdstan(cmdstan_dir: str) -> None:
         elif f.is_file() and f.stem not in BINARIES:
             os.remove(f)
     for tbb_dir in TBB_DIRS:
-        copytree(original_dir / TBB_PARENT / tbb_dir, temp_dir / TBB_PARENT / tbb_dir)
+        src_dir = original_dir / TBB_PARENT / tbb_dir
+        dst_dir = temp_dir / TBB_PARENT / tbb_dir
+        if Path(src_dir).is_dir():
+            copytree(src_dir, dst_dir)
 
     rmtree(original_dir)
     temp_dir.rename(original_dir)
